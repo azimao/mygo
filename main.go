@@ -19,9 +19,9 @@ func main() {
 			}
 		})
 
+		v1.GET("/:topic_id", GetTopicDetail)
 		v1.Use(LoginAuth())
 		{
-			v1.GET("/:topic_id", GetTopicDetail)
 			v1.POST("", NewTopic)
 			v1.DELETE("/:topic_id", DelTopic)
 		}

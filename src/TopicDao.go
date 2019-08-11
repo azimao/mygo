@@ -1,9 +1,12 @@
 package src
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 func GetTopicDetail(c *gin.Context) {
-	c.String(200, "%s", c.Param("topic_id"))
+	//c.String(200, "%s", c.Param("topic_id"))
+	c.JSON(200, CreateTopic(1, "TCazimao"))
 }
 
 func NewTopic(c *gin.Context) {
