@@ -17,15 +17,15 @@ func main() {
 			} else {
 				c.String(200, "get param:%s", c.Query("username"))
 			}
-			//c.JSON(200, c.Param("topic_id"))
 		})
-		v1.GET("/:topic_id", GetTopicDetail)
 
-		r.Use(LoginAuth())
+		v1.Use(LoginAuth())
 		{
-			v1.DELETE("/:topic_id", NewTopic)
+			v1.GET("/:topic_id", GetTopicDetail)
+			v1.POST("", NewTopic)
 			v1.DELETE("/:topic_id", DelTopic)
 		}
 	}
+	r.Run()
 	// 开启服务，默认端口是8080
 }
