@@ -7,5 +7,6 @@ func main() {
 	r.GET("/topic/:topic_id", func(c *gin.Context) {
 		c.JSON(200, c.Param("topic_id"))
 	})
-	r.Run() // 开启服务，默认端口是8080
+	r.Run()
+	// 开启服务，默认端口是8080
 }
