@@ -10,14 +10,7 @@ func main() {
 	v1 := r.Group("/v1/topics")
 	{
 
-		v1.GET("", func(c *gin.Context) {
-			c.DefaultQuery("username", "azimao")
-			if c.Query("username") == "" {
-				c.String(200, "get something")
-			} else {
-				c.String(200, "get param:%s", c.Query("username"))
-			}
-		})
+		v1.GET("", GetTopicList)
 
 		v1.GET("/:topic_id", GetTopicDetail)
 		v1.Use(LoginAuth())

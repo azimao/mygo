@@ -10,7 +10,7 @@ func CreateTopic(id int, title string) Topic {
 }
 
 type TopicQuery struct {
-	Username string `json:"username"`
-	Page     int    `json:"page"`
-	PageSize int    `json:"pagesize"`
+	Username string `json:"username" form:"username"`
+	Page     int    `json:"page" form:"page" binding:"required"`
+	PageSize int    `json:"pagesize" form:"pagesize"`
 }

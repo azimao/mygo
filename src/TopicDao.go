@@ -16,3 +16,14 @@ func NewTopic(c *gin.Context) {
 func DelTopic(c *gin.Context) {
 	c.String(200, "Delete a topic")
 }
+
+func GetTopicList(c *gin.Context) {
+	query := TopicQuery{}
+	err := c.BindQuery(&query)
+
+	if err != nil {
+		c.String(400, "Param error:%s", err.Error())
+	} else {
+		c.JSON(200, query)
+	}
+}
