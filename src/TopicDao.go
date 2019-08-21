@@ -1,28 +1,81 @@
+//package src
+//
+//import (
+//	"github.com/gin-gonic/gin"
+//)
+//
+//func GetTopicDetail(c *gin.Context) {
+//	//c.String(200, "%s", c.Param("topic_id"))
+//	c.JSON(200, CreateTopic(1, "TCazimao"))
+//}
+//
+//func NewTopic(c *gin.Context) {
+//	topic := Topic{}
+//	err := c.BindJSON(&topic)
+//
+//	if err != nil {
+//		c.String(400, "Param error:%s", err.Error())
+//	} else {
+//		c.JSON(200, topic)
+//	}
+//	c.String(200, "Add topic from")
+//}
+//
+//func DelTopic(c *gin.Context) {
+//	c.String(200, "Delete a topic")
+//}
+//
+//func GetTopicList(c *gin.Context) {
+//	query := TopicQuery{}
+//	err := c.BindQuery(&query)
+//
+//	if err != nil {
+//		c.String(400, "Param error:%s", err.Error())
+//	} else {
+//		c.JSON(200, query)
+//	}
+//}
 package src
 
 import (
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
+func MustLogin() gin.HandlerFunc { //必须登录
+	return func(c *gin.Context) {
+		if _, status := c.GetQuery("token"); !status {
+			c.String(http.StatusUnauthorized, "缺少token参数")
+			c.Abort()
+		} else {
+			c.Next()
+		}
+	}
+}
+
 func GetTopicDetail(c *gin.Context) {
-	//c.String(200, "%s", c.Param("topic_id"))
-	c.JSON(200, CreateTopic(1, "TCazimao"))
+	c.JSON(200, CreateTopic(101, "帖子标题"))
 }
-
 func NewTopic(c *gin.Context) {
-	c.String(200, "Add topic from")
-}
+	//判断登录
+	topic := Topic{}
+	err := c.BindJSON(&topic)
+	if err != nil {
+		c.String(400, "参数错误:%s", err.Error())
+	} else {
+		c.JSON(200, topic)
+	}
 
+}
 func DelTopic(c *gin.Context) {
-	c.String(200, "Delete a topic")
+	//判断登录
+	c.String(200, "删除帖子")
 }
-
 func GetTopicList(c *gin.Context) {
 	query := TopicQuery{}
 	err := c.BindQuery(&query)
-
 	if err != nil {
-		c.String(400, "Param error:%s", err.Error())
+		c.String(400, "参数错误:%s", err.Error())
 	} else {
 		c.JSON(200, query)
 	}
