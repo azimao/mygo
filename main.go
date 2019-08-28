@@ -2,11 +2,18 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"gopkg.in/go-playground/validator.v8"
 	. "mygo/src"
 )
 
 func main() {
 	r := gin.Default()
+
+	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		v.RegisterValidation("topicurl", TopicUrl)
+	}
+
 	v1 := r.Group("/v1/topics")
 	{
 

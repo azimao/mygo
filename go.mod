@@ -25,6 +25,9 @@ replace (
 	google.golang.org/grpc => github.com/grpc/grpc-go v1.22.1
 )
 
-require github.com/gin-gonic/gin v1.4.0
+require (
+	github.com/gin-gonic/gin v1.4.0
+	gopkg.in/go-playground/validator.v8 v8.18.2
+)
 
 go 1.13
