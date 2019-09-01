@@ -12,6 +12,7 @@ func main() {
 
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		v.RegisterValidation("topicurl", TopicUrl)
+		v.RegisterValidation("topics", TopicsValidate)
 	}
 
 	v1 := r.Group("/v1/topics")
@@ -24,6 +25,15 @@ func main() {
 		{
 			v1.POST("", NewTopic)
 			v1.DELETE("/:topic_id", DelTopic)
+		}
+	}
+
+	v2 := r.Group("/v2/mtopics")
+	{
+
+		v2.Use(LoginAuth())
+		{
+			v2.POST("", NewTopics)
 		}
 	}
 	r.Run()
