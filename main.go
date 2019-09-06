@@ -1,41 +1,50 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
-	"gopkg.in/go-playground/validator.v8"
-	. "mygo/src"
+	"fmt"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 func main() {
-	r := gin.Default()
-
-	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		v.RegisterValidation("topicurl", TopicUrl)
-		v.RegisterValidation("topics", TopicsValidate)
+	db, _ := gorm.Open("mysql", "root:@/gin?charset=utf8&parseTime=True&loc=Local")
+	rows, _ := db.Raw("select topic_id,topic_title from topics").Rows()
+	for rows.Next() {
+		var t_id int
+		var t_title string
+		rows.Scan(&t_id, &t_title)
+		fmt.Println(t_id, t_title)
 	}
+	defer db.Close()
+	/*	r := gin.Default()
 
-	v1 := r.Group("/v1/topics")
-	{
-
-		v1.GET("", GetTopicList)
-
-		v1.GET("/:topic_id", GetTopicDetail)
-		v1.Use(LoginAuth())
-		{
-			v1.POST("", NewTopic)
-			v1.DELETE("/:topic_id", DelTopic)
+		if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+			v.RegisterValidation("topicurl", TopicUrl)
+			v.RegisterValidation("topics", TopicsValidate)
 		}
-	}
 
-	v2 := r.Group("/v2/mtopics")
-	{
-
-		v2.Use(LoginAuth())
+		v1 := r.Group("/v1/topics")
 		{
-			v2.POST("", NewTopics)
+
+			v1.GET("", GetTopicList)
+
+			v1.GET("/:topic_id", GetTopicDetail)
+			v1.Use(LoginAuth())
+			{
+				v1.POST("", NewTopic)
+				v1.DELETE("/:topic_id", DelTopic)
+			}
 		}
-	}
-	r.Run()
+
+		v2 := r.Group("/v2/mtopics")
+		{
+
+			v2.Use(LoginAuth())
+			{
+				v2.POST("", NewTopics)
+			}
+		}
+		r.Run(Run)*/
 	// 开启服务，默认端口是8080
+
 }
