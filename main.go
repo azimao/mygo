@@ -4,17 +4,26 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	. "mygo/src"
 )
 
 func main() {
 	db, _ := gorm.Open("mysql", "root:@/gin?charset=utf8&parseTime=True&loc=Local")
-	rows, _ := db.Raw("select topic_id,topic_title from topics").Rows()
-	for rows.Next() {
-		var t_id int
-		var t_title string
-		rows.Scan(&t_id, &t_title)
-		fmt.Println(t_id, t_title)
-	}
+	//rows, _ := db.Raw("select topic_id,topic_title from topics").Rows()
+	//for rows.Next() {
+	//	var t_id int
+	//	var t_title string
+	//	rows.Scan(&t_id, &t_title)
+	//	fmt.Println(t_id, t_title)
+	//}
+	db.LogMode(true)
+	tc := TopicClass{}
+	db.First(&tc, 2)
+	fmt.Println(tc)
+
+	var tcs []TopicClass
+	db.Where("class_name=?", "t").Find(&tcs)
+	fmt.Println(tcs)
 	defer db.Close()
 	/*	r := gin.Default()
 
