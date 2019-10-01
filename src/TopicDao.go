@@ -17,7 +17,11 @@ func MustLogin() gin.HandlerFunc { //必须登录
 }
 
 func GetTopicDetail(c *gin.Context) {
-	c.JSON(200, CreateTopic(101, "帖子标题"))
+	tid := c.Param("topic_id")
+	topic := Topic{}
+	DBS.Find(&topic, tid)
+
+	c.JSON(200, topic)
 }
 func NewTopic(c *gin.Context) { //单帖子新增
 	topic := Topic{}
