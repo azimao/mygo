@@ -1,7 +1,6 @@
 package src
 
 import (
-	"fmt"
 	"github.com/jinzhu/gorm"
 	"time"
 )
@@ -9,10 +8,10 @@ import (
 var DBS *gorm.DB
 var err error
 
-func init() {
-	DBS, err = gorm.Open("mysql", "azimao:320199@/gin?charset=utf8&parseTime=True&loc=Local")
+func InitDB() {
+	DBS, err = gorm.Open("mysql", "azimao:32019i9@/gin?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
-		fmt.Println(err)
+		ShutDownServer(err)
 	}
 
 	DBS.DB().SetMaxIdleConns(10)

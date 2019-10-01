@@ -1,11 +1,15 @@
 package main
 
 import (
+	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"gopkg.in/go-playground/validator.v8"
+	"log"
 	. "mygo/src"
+	"net/http"
+	"time"
 )
 
 //全局变量
@@ -70,7 +74,32 @@ func main() {
 			v2.POST("", NewTopics)
 		}
 	}
-	r.Run()
-	// 开启服务，默认端口是8080
+	//r.Run()
+
+	server := &http.Server{
+		Addr:    ":8080",
+		Handler: r,
+	}
+
+	go func() {
+		err := server.ListenAndServe()
+
+		if err != nil {
+			log.Fatal("服务器启动失败")
+		}
+	}()
+
+	go func() {
+		InitDB()
+	}()
+
+	ServerNotify()
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+	err := server.Shutdown(ctx)
+	if err != nil {
+		log.Fatalln("服务器关闭")
+	}
+	log.Println("服务器优雅退出")
 
 }
